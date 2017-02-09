@@ -33,6 +33,18 @@ public class PuzzleBoard {
     private ArrayList<PuzzleTile> tiles;
 
     PuzzleBoard(Bitmap bitmap, int parentWidth) {
+        bitmap = Bitmap.createScaledBitmap(bitmap,parentWidth,parentWidth,false);
+        int widthOfTile = parentWidth/NUM_TILES;
+        tiles = new ArrayList<PuzzleTile>();
+        for(int i=0;i<NUM_TILES;i++){
+            for(int j=0;j<NUM_TILES;j++){
+                Bitmap tile = Bitmap.createBitmap(bitmap,i*widthOfTile,j*widthOfTile,
+                        widthOfTile,widthOfTile);
+                tiles.add(new PuzzleTile(tile,NUM_TILES*j+i));
+            }
+        }
+        tiles.remove(NUM_TILES*NUM_TILES-1);
+        tiles.add(null);
     }
 
     PuzzleBoard(PuzzleBoard otherBoard) {
