@@ -125,9 +125,10 @@ public class PuzzleBoard {
         for(int k=0;k<tiles.size();k++){
             if(tiles.get(k)==null){
                 for(int[] coord:NEIGHBOUR_COORDS){
-                    if(k+NUM_TILES*coord[0]+coord[1]>=0 && k+NUM_TILES*coord[0]+coord[1]<NUM_TILES*NUM_TILES){
+                    if(k / NUM_TILES + coord[1] < NUM_TILES && k / NUM_TILES + coord[1] >= 0 &&
+                            k % NUM_TILES + coord[0] < NUM_TILES && k % NUM_TILES + coord[0] >= 0){
                         PuzzleBoard copiedBoard = new PuzzleBoard(this);
-                        copiedBoard.swapTiles(k,k+NUM_TILES*coord[0]+coord[1]);
+                        copiedBoard.swapTiles(k,k+coord[0]+NUM_TILES*coord[1]);
                         neighbours.add(copiedBoard);
                     }
                 }
