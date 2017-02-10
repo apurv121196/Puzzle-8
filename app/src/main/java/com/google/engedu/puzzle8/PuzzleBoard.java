@@ -1,22 +1,8 @@
-/* Copyright 2016 Google Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.google.engedu.puzzle8;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -30,21 +16,31 @@ public class PuzzleBoard {
             { 0, -1 },
             { 0, 1 }
     };
-    private ArrayList<PuzzleTile> tiles;
+    public ArrayList<PuzzleTile> tiles;
 
-    PuzzleBoard(Bitmap bitmap, int parentWidth) {
-        bitmap = Bitmap.createScaledBitmap(bitmap,parentWidth,parentWidth,false);
+    PuzzleBoard(Bitmap bitmap, int parentWidth,int parentHeight) {
+//        bitmap = Bitmap.createScaledBitmap(bitmap,parentWidth,parentWidth,false);
+        Log.e("mytag",parentWidth+" "+parentHeight+" "+bitmap.getWidth()+" "+bitmap.getHeight());
+        int w=bitmap.getWidth();
+        int h=bitmap.getHeight();
+        if(h>w)
+            bitmap = Bitmap.createBitmap(bitmap,0,(bitmap.getHeight()-bitmap.getWidth())/2-1,w,w);
+        else bitmap = Bitmap.createBitmap(bitmap,-1*(bitmap.getHeight()-bitmap.getWidth())/2-1,0,h,h);
+
+        bitmap = Bitmap.createScaledBitmap(bitmap,parentWidth,parentWidth,true);
         int widthOfTile = parentWidth/NUM_TILES;
         tiles = new ArrayList<PuzzleTile>();
         for(int i=0;i<NUM_TILES;i++){
             for(int j=0;j<NUM_TILES;j++){
-                Bitmap tile = Bitmap.createBitmap(bitmap,i*widthOfTile,j*widthOfTile,
+                Bitmap tile = Bitmap.createBitmap(bitmap,j*widthOfTile,i*widthOfTile,
                         widthOfTile,widthOfTile);
-                tiles.add(new PuzzleTile(tile,NUM_TILES*j+i));
+                //j*widthOfTile is passed as width to maintain order! dikkat thi idhar!
+                tiles.add(new PuzzleTile(tile,NUM_TILES*i+j));
             }
         }
         tiles.remove(NUM_TILES*NUM_TILES-1);
         tiles.add(null);
+
     }
 
     PuzzleBoard(PuzzleBoard otherBoard) {
@@ -120,11 +116,29 @@ public class PuzzleBoard {
     }
 
     public ArrayList<PuzzleBoard> neighbours() {
-        return null;
+        ArrayList<PuzzleBoard> neighbours = new ArrayList<>();
+
+        for(int k=0;k<tiles.size();k++){
+            if(tiles.get(k)==null){
+//                Log.e("mytagx",k + " is null");
+                for(int[] coord:NEIGHBOUR_COORDS){
+                    if(k+NUM_TILES*coord[0]+coord[1]>=0 && k+NUM_TILES*coord[0]+coord[1]<NUM_TILES*NUM_TILES){
+//                        Log.e("mytag",NUM_TILES*coord[0]+coord[1]+"");
+                        PuzzleBoard copiedBoard = new PuzzleBoard(this);
+                        copiedBoard.swapTiles(k,k+NUM_TILES*coord[0]+coord[1]);
+                        Log.e("mytagx","Swapped: "+k+" and "+(k+NUM_TILES*coord[0]+coord[1]));
+                        neighbours.add(copiedBoard);
+                    }
+                }
+            }
+        }
+
+        return neighbours;
     }
 
     public int priority() {
         return 0;
     }
+
 
 }

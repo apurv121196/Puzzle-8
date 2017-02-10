@@ -1,0 +1,78 @@
+{
+  "project_info": {
+    "project_number": "50983475922",
+    "firebase_url": "https://campuzzle-3b77a.firebaseio.com",
+    "project_id": "campuzzle-3b77a",
+    "storage_bucket": "campuzzle-3b77a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:50983475922:android:c788972f60738867",
+        "android_client_info": {
+          "package_name": "com.google.engedu.puzzle8"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "50983475922-be4fr875c1mujuqlv1anhdmk8aedoauu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7D9q79WtprvuMLl-rnOZUIec5zadpKD8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:50983475922:android:235a6a02eb81ccf8",
+        "android_client_info": {
+          "package_name": "com.apurv.android.puzzle8"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "50983475922-be4fr875c1mujuqlv1anhdmk8aedoauu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7D9q79WtprvuMLl-rnOZUIec5zadpKD8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "50983475922-be4fr875c1mujuqlv1anhdmk8aedoauu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
