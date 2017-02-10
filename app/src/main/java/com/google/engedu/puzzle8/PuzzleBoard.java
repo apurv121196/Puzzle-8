@@ -17,12 +17,14 @@ public class PuzzleBoard {
             { 0, 1 }
     };
     public ArrayList<PuzzleTile> tiles;
+    public int steps;
+    PuzzleBoard previousBoard;
 
     PuzzleBoard(Bitmap bitmap, int parentWidth,int parentHeight) {
 //        bitmap = Bitmap.createScaledBitmap(bitmap,parentWidth,parentWidth,false);
-        Log.e("mytag",parentWidth+" "+parentHeight+" "+bitmap.getWidth()+" "+bitmap.getHeight());
         int w=bitmap.getWidth();
         int h=bitmap.getHeight();
+
         if(h>w)
             bitmap = Bitmap.createBitmap(bitmap,0,(bitmap.getHeight()-bitmap.getWidth())/2-1,w,w);
         else bitmap = Bitmap.createBitmap(bitmap,-1*(bitmap.getHeight()-bitmap.getWidth())/2-1,0,h,h);
@@ -45,6 +47,8 @@ public class PuzzleBoard {
 
     PuzzleBoard(PuzzleBoard otherBoard) {
         tiles = (ArrayList<PuzzleTile>) otherBoard.tiles.clone();
+        this.steps = otherBoard.steps + 1;
+        this.previousBoard = otherBoard;
     }
 
     public void reset() {
@@ -120,13 +124,10 @@ public class PuzzleBoard {
 
         for(int k=0;k<tiles.size();k++){
             if(tiles.get(k)==null){
-//                Log.e("mytagx",k + " is null");
                 for(int[] coord:NEIGHBOUR_COORDS){
                     if(k+NUM_TILES*coord[0]+coord[1]>=0 && k+NUM_TILES*coord[0]+coord[1]<NUM_TILES*NUM_TILES){
-//                        Log.e("mytag",NUM_TILES*coord[0]+coord[1]+"");
                         PuzzleBoard copiedBoard = new PuzzleBoard(this);
                         copiedBoard.swapTiles(k,k+NUM_TILES*coord[0]+coord[1]);
-                        Log.e("mytagx","Swapped: "+k+" and "+(k+NUM_TILES*coord[0]+coord[1]));
                         neighbours.add(copiedBoard);
                     }
                 }
@@ -137,7 +138,20 @@ public class PuzzleBoard {
     }
 
     public int priority() {
-        return 0;
+        int manhattanDistance = 0;
+        for(int i=0;i<tiles.size();i++){
+            if(tiles.get(i)!=null) {
+                int rowChange = Math.abs(i % NUM_TILES - tiles.get(i).getNumber() % NUM_TILES);
+                int columnChange = Math.abs(i / NUM_TILES - tiles.get(i).getNumber());
+                manhattanDistance += rowChange + columnChange;
+            }
+            else{
+                int rowChange = Math.abs(i % NUM_TILES - (NUM_TILES*NUM_TILES-1) % NUM_TILES);
+                int columnChange = Math.abs(i / NUM_TILES - (NUM_TILES*NUM_TILES-1)/NUM_TILES);
+                manhattanDistance += rowChange + columnChange;
+            }
+        }
+        return manhattanDistance + steps;
     }
 
 
